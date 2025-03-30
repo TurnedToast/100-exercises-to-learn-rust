@@ -11,27 +11,14 @@ pub struct Ticket {
 
 impl Ticket {
     pub fn new(title: String, description: String, status: String) -> Ticket {
-        if title.is_empty() {
-            panic!("Title cannot be empty");
-        }
-        if title.len() > 50 {
-            panic!("Title cannot be longer than 50 bytes");
-        }
-        if description.is_empty() {
-            panic!("Description cannot be empty");
-        }
-        if description.len() > 500 {
-            panic!("Description cannot be longer than 500 bytes");
-        }
-        if status != "To-Do" && status != "In Progress" && status != "Done" {
-            panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed");
-        }
-
-        Ticket {
+        let ticket = Ticket {
             title,
             description,
             status,
-        }
+        };
+
+        Self::validate(&ticket);
+        ticket
     }
 
     pub fn title(&self) -> &String {
@@ -44,6 +31,39 @@ impl Ticket {
 
     pub fn status(&self) -> &String {
         &self.status
+    }
+
+    pub fn set_title(&mut self, title: String) {
+        self.title = title;
+        Self::validate(self)
+    }
+
+    pub fn set_description(&mut self, description: String) {
+        self.description = description;
+        Self::validate(self)
+    }
+
+    pub fn set_status(&mut self, status: String) {
+        self.status = status;
+        Self::validate(self)
+    }
+
+    fn validate(ticket: &Ticket) {
+        if ticket.title.is_empty() {
+            panic!("Title cannot be empty");
+        }
+        if ticket.title.len() > 50 {
+            panic!("Title cannot be longer than 50 bytes");
+        }
+        if ticket.description.is_empty() {
+            panic!("Description cannot be empty");
+        }
+        if ticket.description.len() > 500 {
+            panic!("Description cannot be longer than 500 bytes");
+        }
+        if ticket.status != "To-Do" && ticket.status != "In Progress" && ticket.status != "Done" {
+            panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed");
+        }
     }
 }
 
